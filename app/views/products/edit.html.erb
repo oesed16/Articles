@@ -1,0 +1,42 @@
+<% all_categories = @product.categories.map{|x| x.id} %>
+
+<% unless @product.new_record? 
+	@product.categories.delete_all 
+end %> 
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <h1>Editar Producto</h1>
+            <p>
+                <%= form_for @product do |f| %>
+                    <div class="form-group">
+                        <%= f.text_field :name, class: "form-control", placeholder:"Nombre del producto" %>
+                    </div>
+                    <div class="form-group">
+                        <%= f.text_field :price, class: "form-control", placeholder:"Precio del producto" %>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="form-check">
+                            <% for category in @categories %> 
+                                <% if @product.new_record? %>
+                                    <%= check_box_tag "categories[#{category.id}]", category.id %>
+                                <% else %>
+                                    <% if all_categories.include?(category.id) %>
+                                        <%= check_box_tag "categories[#{category.id}]", category.id, {checked: true} %> 
+                                    <% else %>
+                                        <%= check_box_tag "categories[#{category.id}]", category.id %>
+                                    <% end %>
+                                <% end %>
+	                            <%= category.name %> </br>
+	                        <% end %>
+                            </div>
+                        </div>
+                    </div>
+                    <%= f.submit class: "btn btn-primary btn-block" %>
+                <% end %>
+            </p>
+        </div>
+    </div>
+</div>
